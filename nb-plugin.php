@@ -4,17 +4,17 @@
 	Author URI: http://nickhaskins.com
 	Plugin Name: Nicks Base Plugin
 	Plugin URI: http://nickhaskins.com
-	Version: 1.2
-	Description: Build interactive presentations, and responsive single-page micro-sites.
-	Class Name: baShowOff
-	Demo: http://showoff.nichola.us
+	Version: 1.0
+	Description: A base plugin for PageLines DMS.
+	Demo:
 	Pagelines:true
 */
 
+// Check to make sure we're in DMS
 add_action('pagelines_setup', 'nbplugin_init' );
 function nbplugin_init() {
 
-	if( !function_exists('ploption') )
+	if( !function_exists('pl_has_editor') )
 		return;
 
 	$landing = new nbBasePlugin;
@@ -37,6 +37,7 @@ class nbBasePlugin {
 
 	}
 
+    // Add a less file
 	function showoff_less() {
 
         $file = sprintf( '%sstyle.less', plugin_dir_path( __FILE__ ) );
@@ -57,17 +58,7 @@ class nbBasePlugin {
 
 		wp_register_script('nbplugin-script',$this->url.'/script.js', array('jquery'), self::version, true );
 
-		wp_enqueue_script('nbplugin-script');
-	}
-
-	function draw_layout(){
-
-		// Get the Nav
-		$this->nav();
-
-		// Get the panels
-		$this->panels();
-
+		//wp_enqueue_script('nbplugin-script');
 	}
 
 
@@ -75,7 +66,7 @@ class nbBasePlugin {
 
         $settings[ $this->id ] = array(
                 'name'  => 'Nicks Base Plugin',
-                'icon'  => 'icon-list-alt',
+                'icon'  => 'icon-rocket',
                 'pos'   => 5,
                 'opts'  => $this->global_opts()
         );
@@ -89,21 +80,19 @@ class nbBasePlugin {
             array(
                 'key' => 'pocket_slug_setup',
                 'type' => 'multi',
-                'title' => __('Naming Setup', 'pockets'),
-                'shortexp' => __('Setup slugs for your Pocket', 'pockets'),
+                'title' => __('Sample Option', 'nb-plugin'),
                 'opts' => array(
                     array(
                         'key' => 'pocket_slug_singular',
                         'type' => 'text',
-                        'label' => __('Singular Slug (ex: dog)', 'pockets'),
+                        'label' => __('Some Option', 'nb-plugin'),
                     ),
                     array(
                         'key' => 'pocket_slug_plural',
                         'type' => 'text',
-                        'label' => __('Plural Slug (ex: dogs)', 'pockets'),
+                        'label' => __('Some Option', 'nb-plugin'),
                     ),
                 ),
-                'exp' => __('Provide your own slugs. By default, the Singular Slug is <code>pocket</code> and the Plural Slug is <code>pockets</code>. You can change them to whatever you please and the section will automaticlaly rewrite the URL\'s to accomodate.  Enter in all lower case letters.', 'pockets'),
             ),
 
         );
