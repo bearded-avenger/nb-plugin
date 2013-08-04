@@ -4,7 +4,7 @@
 	Author URI: http://nickhaskins.com
 	Plugin Name: Nicks Base Plugin
 	Plugin URI: http://nickhaskins.com
-	Version: 1.0
+	Version: 1.1
 	Description: A base plugin for PageLines DMS.
 	Demo:
 	Pagelines:true
@@ -21,27 +21,26 @@ function nbplugin_init() {
 }
 class nbBasePlugin {
 
-	var $ptID = 'showoff';
-	const version = '1.0';
+	const version = '1.1';
 
 	function __construct() {
 
-		$this->id   = 'nb-plugin';
+		$this->id   = 'nb_plugin';
 		$this->name = 'Nicks Base Plugin';
         $this->dir  = plugin_dir_path( __FILE__ );
         $this->url  = plugins_url( '', __FILE__ );
         $this->icon = plugins_url( '/icon.png', __FILE__ );
 
-		add_action( 'template_redirect',  array(&$this,'showoff_less' ));
+		add_action( 'template_redirect',  array(&$this,'insert_less' ));
 		add_action( 'init', array( &$this, 'init' ) );
 
 	}
 
     // Add a less file
-	function showoff_less() {
+	function insert_less() {
 
         $file = sprintf( '%sstyle.less', plugin_dir_path( __FILE__ ) );
-        if(function_exists('pagelines_insert_core_less()')) {
+        if(function_exists('pagelines_insert_core_less')) {
             pagelines_insert_core_less( $file );
         }
 
@@ -53,7 +52,7 @@ class nbBasePlugin {
 		add_filter('pl_settings_array', array(&$this, 'options'));
 	}
 
-
+    // Enqueue stuffs
 	function scripts(){
 
 		wp_register_script('nbplugin-script',$this->url.'/script.js', array('jquery'), self::version, true );
@@ -61,12 +60,14 @@ class nbBasePlugin {
 		//wp_enqueue_script('nbplugin-script');
 	}
 
-
+    // Init options
+    // Choose from Font Awesome icons for Icon
+    // Position denotes how far from top in Global Options Tab
     function options( $settings ){
 
         $settings[ $this->id ] = array(
-                'name'  => 'Nicks Base Plugin',
-                'icon'  => 'icon-rocket',
+                'name'  => $this->name,
+                'icon'  => 'icon-thumbs-up',
                 'pos'   => 5,
                 'opts'  => $this->global_opts()
         );
@@ -74,21 +75,23 @@ class nbBasePlugin {
         return $settings;
     }
 
+    // Draw Options Panel
+    // Call settings as $var = pl_setting($this->id.'_optionB');
     function global_opts(){
 
         $global_opts = array(
             array(
-                'key' => 'pocket_slug_setup',
+                'key' => $this->id.'_optionA',
                 'type' => 'multi',
                 'title' => __('Sample Option', 'nb-plugin'),
                 'opts' => array(
                     array(
-                        'key' => 'pocket_slug_singular',
+                        'key' => $this->id.'_optionB',
                         'type' => 'text',
                         'label' => __('Some Option', 'nb-plugin'),
                     ),
                     array(
-                        'key' => 'pocket_slug_plural',
+                        'key' => $this->id.'_optionC',
                         'type' => 'text',
                         'label' => __('Some Option', 'nb-plugin'),
                     ),
