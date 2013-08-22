@@ -4,7 +4,7 @@
 	Author URI: http://nickhaskins.com
 	Plugin Name: Nicks Base Plugin
 	Plugin URI: http://nickhaskins.com
-	Version: 1.1
+	Version: 1.2
 	Description: A base plugin for PageLines DMS.
 	Demo:
 	Pagelines:true
@@ -21,7 +21,7 @@ function nbplugin_init() {
 }
 class nbBasePlugin {
 
-	const version = '1.1';
+	const version = '1.2';
 
 	function __construct() {
 
@@ -100,7 +100,7 @@ class nbBasePlugin {
 
         );
 
-        return array_merge($global_opts);
+        return $global_opts;
     }
 
 }
